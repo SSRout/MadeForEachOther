@@ -1,4 +1,5 @@
-﻿.vscode
+﻿#Other File and Folders
+.vscode
 .vs
 bin
 obj
