@@ -8,9 +8,9 @@
 
 | Project | References/Packages |
 | ------------- | ------------- |
-| API | Microsoft.EntityFrameworkCore.SqlServer |
-| API  |Microsoft.EntityFrameworkCore.Design |
-| API | dotnet tool install --global dotnet-ef |
-| API  | Swashbuckle.AspNetCore |
-| API |DataLibrary|
-| API |Microsoft.AspNetCore.Blazor.HttpClient from nuget|
+| API | Microsoft.EntityFrameworkCore.SqlServer (from nuget)|
+| API  |Microsoft.EntityFrameworkCore.Design (from nuget)|
+| API | dotnet tool install --global dotnet-ef (from cli)|
+| API  | Swashbuckle.AspNetCore (from nuget)|
+| client |ng add ngx-bootstrap (from cli)|
+| client |npm install font-awesome (from cli)|

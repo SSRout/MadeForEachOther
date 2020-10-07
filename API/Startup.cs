@@ -34,6 +34,7 @@ namespace API
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
             services.AddControllers();
+            services.AddCors();//Order important
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
@@ -53,7 +54,7 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseCors(ploicy=>ploicy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));//Order Important
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
