@@ -1,13 +1,14 @@
 using API.Data;
 using API.Entities;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+
+
 namespace API.Controllers
 {
-    public class UsersController : BaseController
+    public class UsersController : BaseApiController
     {
         private readonly DataContext _context;
         public UsersController(DataContext context)
@@ -16,6 +17,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUser(){
             return await _context.Users.ToListAsync();
         }
