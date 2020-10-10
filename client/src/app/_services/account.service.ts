@@ -25,7 +25,18 @@ export class AccountService {
     );
   }
 
-  setCurrentUser(user:any){
+  register(model:any){
+    return this.http.post(environment.apiUrl+'account/register',model).pipe(
+      map((user:User)=>{
+        if(user){
+          localStorage.setItem('user',JSON.stringify(user))
+          this.setCurrentUser(user);
+        }
+      })
+    )
+  }
+
+  setCurrentUser(user:User){
     this.currentUserSource.next(user);
   }
 

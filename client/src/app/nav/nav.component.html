@@ -1,11 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <img class="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQSmmdRiesg36jcd34H2xMvcD5hCC8_PZa14g&usqp=CAU" alt="Made For Each Other">
-  <a class="navbar-brand" href="#">Made For Each Other</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
   <div class="container">
-    <div class="collapse navbar-collapse" id="navbarCollapse">
+    <a class="navbar-brand" href="#">Made For Each Other</a>
       <ul class="navbar-nav mr-auto" *ngIf="accountService.currentUser$ | async">
         <li class="nav-item">
           <a class="nav-link" href="#">Matches</a>
@@ -32,5 +27,4 @@
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
       </form>
     </div>
-  </div>
 </nav>
