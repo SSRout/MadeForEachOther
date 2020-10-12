@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using API.Extensions;
+using API.MiddleWare;
 
 namespace API
 {
@@ -39,15 +40,19 @@ namespace API
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
+            app.UseMiddleware<ExceptionMiddleWare>();//custom global error handler
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors(ploicy=>ploicy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));//Order Important
+            app.UseCors(x => x.AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+                .WithOrigins("https://localhost:4200"));//Order Important
             app.UseAuthentication();
             app.UseAuthorization();
 
