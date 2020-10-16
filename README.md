@@ -14,6 +14,7 @@
 | API | Swashbuckle.AspNetCore (from nuget) |
 | API | System.IdentityModel.Tokens.Jwt (from nuget) |
 | API | Microsoft.AspNetCore.Authentication.JwtBearer (from nuget) |
+| API | AutoMapper.Extensions.Microsoft.DependencyInjection (from nuget) |
 | Client | ng add ngx-bootstrap (from cli) |
 | Client | npm install font-awesome (from cli) |
 | Client | npm install ngx-toaster (from cli) |

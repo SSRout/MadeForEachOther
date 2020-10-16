@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic; 
+using API.Extensions;
 namespace API.Entities
 {
     public class AppUser
@@ -9,5 +12,24 @@ namespace API.Entities
       public string FirstName { get; set; }
       public string LastName { get; set; }
       public string Alias { get; set; }
+      public DateTime DateOfBirth { get; set; }
+      public string ContactNo { get; set; }
+      public string EmailId { get; set; }
+      public string Gender { get; set; }
+      public string Biodata { get; set; }
+      public string LookingFor { get; set; }
+      public string Interests { get; set; }
+      public string Religion { get; set; }
+      public string Cast { get; set; }
+      public string City { get; set; }
+      public string State { get; set; }
+      public string Country { get; set; }="India";
+      public ICollection<Photo> Photos { get; set; }
+      public DateTime LastActive { get; set; }=DateTime.Now;
+      public DateTime CreatedDate { get; set; }=DateTime.Now;
+
+      // public int getAge(){
+      //   return DateOfBirth.CalculateAge();//extension method
+      // }
     }
 }
