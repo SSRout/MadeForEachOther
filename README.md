@@ -18,6 +18,8 @@
 | Client | ng add ngx-bootstrap (from cli) |
 | Client | npm install font-awesome (from cli) |
 | Client | npm install ngx-toaster (from cli) |
+| Client | npm install @kolkov/ngx-gallery (from cli) |
+
 
 
 
