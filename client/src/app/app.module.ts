@@ -1,3 +1,4 @@
+import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { JwtTokenInterceptor } from './_interceptors/jwt-token.interceptor';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { SharedModule } from './shared.module';
@@ -20,6 +21,8 @@ import { TestErrorsComponent } from './errors/test-errors/test-errors.component'
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,8 @@ import { MemberCardComponent } from './members/member-card/member-card.component
     TestErrorsComponent,
     NotFoundComponent,
     ServerErrorComponent,
-    MemberCardComponent
+    MemberCardComponent,
+    MemberEditComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +46,8 @@ import { MemberCardComponent } from './members/member-card/member-card.component
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    NgxSpinnerModule
   ],
   providers: [
     {
@@ -52,6 +57,10 @@ import { MemberCardComponent } from './members/member-card/member-card.component
     },
     {provide:HTTP_INTERCEPTORS,
       useClass:JwtTokenInterceptor,
+      multi:true
+    },
+    {provide:HTTP_INTERCEPTORS,
+      useClass:LoadingInterceptor,
       multi:true
     }
   ],
