@@ -15,10 +15,12 @@
 | API | System.IdentityModel.Tokens.Jwt (from nuget) |
 | API | Microsoft.AspNetCore.Authentication.JwtBearer (from nuget) |
 | API | AutoMapper.Extensions.Microsoft.DependencyInjection (from nuget) |
+| API | CloudinaryDotNet(from nuget) |
 | Client | ng add ngx-bootstrap (from cli) |
 | Client | npm install font-awesome (from cli) |
 | Client | npm install ngx-toaster (from cli) |
 | Client | npm install @kolkov/ngx-gallery (from cli) |
+| Client | npm install ng2-file-upload (from cli) |
 
 
 

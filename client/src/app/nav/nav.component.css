@@ -2,8 +2,9 @@
     cursor: pointer;
 }
 
-img {
-    max-height: 50px;
-    border: 2px solid #fff;
-    display: inline;
-}
+.avatar {
+    vertical-align: middle;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
