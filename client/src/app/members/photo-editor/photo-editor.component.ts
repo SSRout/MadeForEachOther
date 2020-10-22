@@ -1,13 +1,14 @@
+import { User } from './../../_models/user';
 import { ToastrService } from 'ngx-toastr';
 import { Photo } from './../../_models/photo';
 import { MembersService } from './../../_services/members.service';
 import { take } from 'rxjs/operators';
 import { AccountService } from './../../_services/account.service';
-import { environment } from './../../../environments/environment.prod';
 import { Component, Input, OnInit } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { Member } from 'src/app/_models/member';
-import { User } from 'src/app/_models/user';
+import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-photo-editor',
@@ -49,8 +50,13 @@ export class PhotoEditorComponent implements OnInit {
 
     this.uploader.onSuccessItem=(item,response,status,header)=>{
       if(response){
-        const photo=JSON.parse(response);
+        const photo:Photo=JSON.parse(response);
         this.member.photos.push(photo);
+        if(photo.isMain){
+          this.user.photoUrl=photo.url;
+          this.member.photoUrl=photo.url;
+          this.accountService.setCurrentUser(this.user);
+        }
       }
     }
   }

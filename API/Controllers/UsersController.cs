@@ -1,12 +1,10 @@
 using API.Entities;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using API.Interfaces;
 using API.Dtos;
 using AutoMapper;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using API.Extensions;
 using System.Linq;

@@ -1,7 +1,7 @@
 <div class="row" *ngIf="member">
   <div class="col-4">
     <div class="card">
-      <img src="{{(member.photoUrl!=null)?member.photoUrl:'.assets/user.png'}}" alt="{{member.alias}}"
+      <img src="{{(member.photoUrl!=null)?member.photoUrl:'./assets/user.png'}}" alt="{{member.alias}}"
         class="card-img-top img-thumbnail">
       <div class="card-body">
         <div>
@@ -36,11 +36,11 @@
           
         <strong>Name:{{member.lastname}}, {{member.firstname}}</strong>
 
-        <h5>Description</h5>
+        <h5 *ngIf="member.biodata">Description</h5>
         <p>{{member.biodata}}</p>
 
 
-        <h5>Looking For</h5>
+        <h5 *ngIf="member.lookingFor">Looking For</h5>
         <p>{{member.lookingFor}}</p>
       </tab>
       <tab heading='Interests'>

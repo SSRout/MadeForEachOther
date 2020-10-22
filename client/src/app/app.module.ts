@@ -24,6 +24,8 @@ import { MemberCardComponent } from './members/member-card/member-card.component
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
+import { InputTextComponent } from './_forms/input-text/input-text.component';
+import { InputDateComponent } from './_forms/input-date/input-date.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
     ServerErrorComponent,
     MemberCardComponent,
     MemberEditComponent,
-    PhotoEditorComponent
+    PhotoEditorComponent,
+    InputTextComponent,
+    InputDateComponent
   ],
   imports: [
     BrowserModule,
