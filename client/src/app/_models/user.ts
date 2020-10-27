@@ -2,7 +2,7 @@ export interface User{
     userName: string;
     token: string;
     photoUrl: string;
-    knownAs: string;
+    alias: string;
     gender: string;
     roles: string[];
 }
