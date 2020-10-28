@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
 
   initializeForm(){//reactive form with form Builder
     this.registerForm=this.fb.group({
-      gender:['groom'],
+      gender:['',Validators.required],
       dob:['',Validators.required],
       username:['',Validators.required],
       password:['',[Validators.required,Validators.minLength(4),Validators.maxLength(8)]],
@@ -48,7 +48,14 @@ export class RegisterComponent implements OnInit {
   }
 
   register(){
-   this.accountService.register(this.registerForm.value).subscribe(response=>{
+    const formValues=this.registerForm.value;
+    var user={
+      gender:formValues.gender,
+      DateOFBirth:new Date(formValues.dob),
+      userName:formValues.username,
+      password:formValues.password
+    }
+   this.accountService.register(user).subscribe(response=>{
      this.route.navigateByUrl('/members');
    },error=>{
      console.log(error);

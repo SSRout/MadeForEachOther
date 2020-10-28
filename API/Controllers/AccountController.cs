@@ -30,7 +30,6 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if (await UserExists(registerDto.Username)) return BadRequest("User Exists");
-
             var user=_mapper.Map<AppUser>(registerDto);
 
             using var hmac = new HMACSHA512();
@@ -43,13 +42,14 @@ namespace API.Controllers
                 user.UserName = registerDto.Username.ToLower();
                 user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
                 user.PasswordSalt = hmac.Key;
+                user.Alias=registerDto.Username;
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return new UserDto { 
                  UserName = user.UserName,
                  Token = _tokenService.CreateToken(user),
-                 Alias=user.Alias,
+                 Alias=user.Alias??user.UserName,
                  Gender=user.Gender
              };
         }
@@ -77,7 +77,7 @@ namespace API.Controllers
                 Token = _tokenService.CreateToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
                 Alias=user.Alias??user.UserName,
-                 Gender=user.Gender
+                Gender=user.Gender
             };
 
         }
