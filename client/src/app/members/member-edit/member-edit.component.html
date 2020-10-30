@@ -22,7 +22,7 @@
         </div>
         <div>
           <strong>Last Active:</strong>
-          <p>{{member.lastActive}}</p>
+          <p>{{member.lastActive | timeago}}</p>
         </div>
         <div>
           <strong>Member Since:</strong>
@@ -84,6 +84,7 @@
             </div>
           </div>
 
+
           <div class="row mt-1">
             <div class="col-10">
               <label for="biodata">Description</label>
@@ -114,6 +115,7 @@
                 <option *ngFor="let country of countrries" value={{country.id}}>{{country.name}}</option>
               </select>
             </div>
+            
 
             <div class="col-4">
               <label for="state">State</label>
@@ -130,11 +132,8 @@
                 <option value="0">Select City</option>
                 <option *ngFor="let city of cities" value={{city.id}}>{{city.name}}</option>
               </select>
-            </div>
-           
+            </div>           
           </div>
-         
-
         </form>
 
       </tab>
