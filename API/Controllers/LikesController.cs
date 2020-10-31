@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using API.Dtos;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,7 @@ namespace API.Controllers
         public async Task<ActionResult> AddLike(string username){
             var sourceUserId=User.GetUserId();
             var likedUser=await _userRepository.GetUserByUsernameAsync(username);
-            var sourseUser=await _likesRepository.GetUsersWithLikes(sourceUserId);
+            var sourseUser=await _likesRepository.GetUserWithLikes(sourceUserId);
 
             if(likedUser==null) return NotFound();
             if(sourseUser.UserName==username) return BadRequest("Can't Like Yourself");
@@ -44,8 +45,12 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LikeDto>>> GetUserLikes(string prdeicate){
-            var users= await _likesRepository.GetUserLikes(prdeicate,User.GetUserId());
+        public async Task<ActionResult<IEnumerable<LikeDto>>> GetUserLikes([FromQuery] LikesParams likesParams){
+            likesParams.UserId=User.GetUserId();
+            var users= await _likesRepository.GetUserLikes(likesParams);
+
+            Response.AddPaginationHeader(users.CurrentPage,users.PageSize,users.TotalCount,users.TotalPages);
+            
             return Ok(users);
         }
     }

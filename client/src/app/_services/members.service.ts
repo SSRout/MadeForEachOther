@@ -2,7 +2,7 @@ import { UserParams } from './../_models/userParams';
 import { PaginatedResult } from './../_models/pagination';
 import { Member } from './../_models/member';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient , HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
@@ -130,8 +130,11 @@ export class MembersService {
     return this.http.post(environment.apiUrl+'likes/'+username,{});
   }
 
-  getLikes(prdeicate:string){
-    return this.http.get<Partial<Member[]>>(environment.apiUrl+'likes?prdeicate='+prdeicate);
+  getLikes(predicate:string,pageNumber,pageSize){
+    let params = this.getPaginationHeaders(pageNumber, pageSize);
+    params = params.append('predicate', predicate);
+    console.log(params);
+    return this.getPaginatedResult<Partial<Member[]>>(environment.apiUrl+'likes',params);
   }
 
   
