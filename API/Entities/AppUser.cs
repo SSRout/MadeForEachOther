@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic; 
-using API.Extensions;
 namespace API.Entities
 {
     public class AppUser
@@ -27,9 +26,7 @@ namespace API.Entities
       public ICollection<Photo> Photos { get; set; }
       public DateTime LastActive { get; set; }=DateTime.Now;
       public DateTime CreatedDate { get; set; }=DateTime.Now;
-
-      // public int getAge(){
-      //   return DateOfBirth.CalculateAge();//extension method
-      // }
+      public ICollection<UserLike> LikedByUsers { get; set; }
+      public ICollection<UserLike> LikedUsers { get; set; }
     }
 }

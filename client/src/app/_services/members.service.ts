@@ -125,4 +125,15 @@ export class MembersService {
         })
       );
   }
+
+  addLike(username:string){
+    return this.http.post(environment.apiUrl+'likes/'+username,{});
+  }
+
+  getLikes(prdeicate:string){
+    return this.http.get<Partial<Member[]>>(environment.apiUrl+'likes?prdeicate='+prdeicate);
+  }
+
+  
+
 }
