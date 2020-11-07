@@ -1,8 +1,11 @@
+import { MessageService } from './../../_services/message.service';
+import { Message } from './../../_models/message';
 import { MembersService } from './../../_services/members.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Member } from 'src/app/_models/member';
 import { ActivatedRoute } from '@angular/router';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
+import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
 
 @Component({
   selector: 'app-member-details',
@@ -10,10 +13,14 @@ import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov
   styleUrls: ['./member-details.component.css']
 })
 export class MemberDetailsComponent implements OnInit {
+  @ViewChild('memberTabs')  memberTabs: TabsetComponent;
   member:Member;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
-  constructor(private memberService:MembersService,private router:ActivatedRoute) { }
+  activeTab:TabDirective;
+  messages:Message[]=[];
+
+  constructor(private memberService:MembersService,private router:ActivatedRoute,private  messageService:MessageService) { }
 
   ngOnInit(): void {
     this.loadMember();
@@ -28,7 +35,7 @@ export class MemberDetailsComponent implements OnInit {
         preview: false
       }
     ]
-    // this.galleryImages = this.getImages(); 
+   // this.galleryImages = this.getImages(); 
   }
 
   getImages(): NgxGalleryImage[] {
@@ -54,8 +61,25 @@ export class MemberDetailsComponent implements OnInit {
         this.member=member;
         this.galleryImages = this.getImages(); 
       })
+    }    
+  }
+
+  loadMessages(){
+    this.messageService.getMessageThread(this.member.username).subscribe(message=>{
+      this.messages=message;
+    });
+  }
+
+  selectTab(tabId: number) {
+    this.memberTabs.tabs[tabId].active = true;
+  }
+
+
+  onTabActivated(data:TabDirective){
+    this.activeTab=data;
+    if(this.activeTab.heading==='Messages' && this.messages.length===0){
+      this.loadMessages();
     }
-    
   }
 
 }

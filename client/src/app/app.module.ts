@@ -26,6 +26,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { InputTextComponent } from './_forms/input-text/input-text.component';
 import { InputDateComponent } from './_forms/input-date/input-date.component';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { InputDateComponent } from './_forms/input-date/input-date.component';
     MemberEditComponent,
     PhotoEditorComponent,
     InputTextComponent,
-    InputDateComponent
+    InputDateComponent,
+    MemberMessagesComponent
   ],
   imports: [
     BrowserModule,

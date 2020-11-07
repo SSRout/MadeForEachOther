@@ -24,15 +24,15 @@
       <div class="card-footer">
         <div class="btn-group d-flex">
           <button class="btn btn-primary mr-1">Like</button>
-          <button class="btn btn-success">Message</button>
+          <button (click)="selectTab(3)" class="btn btn-success">Message</button>
         </div>
       </div>
     </div>
   </div>
 
   <div class="col-8">
-    <tabset class="member-tabset">
-      <tab heading='About {{member.alias}}'>
+    <tabset class="member-tabset" #memberTabs>
+      <tab heading='About {{member.alias}}' (selectTab)="onTabActivated($event)">
           
         <strong>Name:{{member.lastname}}, {{member.firstname}}</strong>
 
@@ -43,15 +43,15 @@
         <h5 *ngIf="member.lookingFor">Looking For</h5>
         <p>{{member.lookingFor}}</p>
       </tab>
-      <tab heading='Interests'>
+      <tab heading='Interests' (selectTab)="onTabActivated($event)">
         <h5>Interests</h5>
         <p>{{member.interests}}</p>
       </tab>
-      <tab heading='Photos'>
+      <tab heading='Photos' (selectTab)="onTabActivated($event)">
         <ngx-gallery [options]="galleryOptions" [images]="galleryImages" style="display:inline-block; margin-bottom: 20px;"></ngx-gallery>
       </tab>
-      <tab heading='Messages'>
-        <p>Messages----------</p>
+      <tab heading='Messages' (selectTab)="onTabActivated($event)">
+       <app-member-messages [messages]="messages"></app-member-messages> 
       </tab>
     </tabset>
   </div>
