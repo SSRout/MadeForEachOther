@@ -42,7 +42,7 @@ namespace API.Data
 
         public async Task<PagedList<MessageDto>> GetMessageForUser(MessageParams messageParams)
         {
-            var query = _context.Messages.OrderByDescending(m => m.MesageSent).AsQueryable();
+            var query = _context.Messages.OrderByDescending(m => m.MessageSent).AsQueryable();
 
             query = messageParams.Container switch
             {
@@ -64,7 +64,7 @@ namespace API.Data
                m=>m.Recipient.UserName==currentUserName  && m.RecipientDeleted==false
                 && m.Sender.UserName==recipientName 
               || m.Recipient.UserName==recipientName  && m.SenderDeleted==false && m.Sender.UserName==currentUserName
-              ).OrderBy(m=>m.MesageSent).ToListAsync(); 
+              ).OrderBy(m=>m.MessageSent).ToListAsync(); 
 
            var unreadMessages=meassages.Where(m=>m.DateRead==null && m.Recipient.UserName==currentUserName).ToList();
 
