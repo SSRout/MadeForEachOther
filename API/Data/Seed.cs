@@ -33,7 +33,7 @@ namespace API.Data
 
             foreach(var user in users){
                user.UserName=user.UserName.ToLower();
-               await  userManager.CreateAsync(user,"P@ss0rd");
+               await  userManager.CreateAsync(user,"P@ssw0rd");
                await userManager.AddToRoleAsync(user,"Member");
             }
 

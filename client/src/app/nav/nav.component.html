@@ -3,6 +3,9 @@
     <a class="navbar-brand" routerLink="/" routerLinkActive='active'>Made For Each Other</a>
       <ul class="navbar-nav mr-auto">
         <ng-container  *ngIf="accountService.currentUser$ | async">
+          <li class="nav-item" *appHasRole='["Admin","Moderator"]'>
+            <a class="nav-link" routerLink="/admin" routerLinkActive='active'>Admin</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="/members" routerLinkActive='active'>Matches</a>
           </li>
