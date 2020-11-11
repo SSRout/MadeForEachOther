@@ -18,6 +18,9 @@ namespace API.Data
         public DbSet<Country> Countries { get; set; }
         public DbSet<State> States { get; set; }
         public DbSet<City> Cities { get; set; }
+
+        public DbSet<Connection> Connections {get;set;}
+        public DbSet<Group> Groups { get; set; }
         protected override void OnModelCreating(ModelBuilder builder){
             base.OnModelCreating(builder);
 
