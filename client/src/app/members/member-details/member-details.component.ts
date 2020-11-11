@@ -1,6 +1,6 @@
+import { OnlinePresenceService } from './../../_services/online-presence.service';
 import { MessageService } from './../../_services/message.service';
 import { Message } from './../../_models/message';
-import { MembersService } from './../../_services/members.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Member } from 'src/app/_models/member';
 import { ActivatedRoute } from '@angular/router';
@@ -20,7 +20,7 @@ export class MemberDetailsComponent implements OnInit {
   activeTab:TabDirective;
   messages:Message[]=[];
 
-  constructor(private memberService:MembersService,private router:ActivatedRoute,private  messageService:MessageService) { }
+  constructor(private router:ActivatedRoute,private  messageService:MessageService,public presence:OnlinePresenceService) { }
 
   ngOnInit(): void {
     this.router.data.subscribe(data=>{

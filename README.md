@@ -22,6 +22,7 @@
 | Client | npm install ngx-toaster (from cli) |
 | Client | npm install @kolkov/ngx-gallery (from cli) |
 | Client | npm install ng2-file-upload (from cli) |
+| Client | npm install @microsoft/signalr (from cli) |
 
 
 

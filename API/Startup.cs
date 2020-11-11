@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using API.Extensions;
 using API.MiddleWare;
+using API.SignalR;
 
 namespace API
 {
@@ -28,6 +29,8 @@ namespace API
             services.AddCors();//Order important
             
             services.AddIdentityService(_config);//Custom Extension Method
+
+            services.AddSignalR();
 
             services.AddSwaggerGen(c =>
             {
@@ -53,12 +56,14 @@ namespace API
                 .AllowAnyMethod()
                 .AllowCredentials()
                 .WithOrigins("https://localhost:4200"));//Order Important
+                
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<PresenceHub>("hubs/presence");
             });
         }
     }

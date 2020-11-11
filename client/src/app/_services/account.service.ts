@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import {map} from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { OnlinePresenceService } from './online-presence.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ import { environment } from 'src/environments/environment';
 export class AccountService {
   private currentUserSource=new ReplaySubject<User>(1);
   currentUser$=this.currentUserSource.asObservable();
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private onlinePresenceService:OnlinePresenceService) {}
 
   login(model: any) {
     return this.http.post(environment.apiUrl + 'account/login', model).pipe(
@@ -19,6 +20,7 @@ export class AccountService {
         const user = response;
         if(user){
           this.setCurrentUser(user);
+          this.onlinePresenceService.crateHubConnection(user)
         }
       })
     );
@@ -29,6 +31,7 @@ export class AccountService {
       map((user:User)=>{
         if(user){        
           this.setCurrentUser(user);
+          this.onlinePresenceService.crateHubConnection(user)
         }
       })
     )
@@ -45,6 +48,7 @@ export class AccountService {
   logout(){
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
+    this.onlinePresenceService.stopHubConnection()
   }
 
   getDecodedToken(token){
