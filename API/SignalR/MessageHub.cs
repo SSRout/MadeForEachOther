@@ -11,20 +11,17 @@ namespace API.SignalR
 {
     public class MessageHub : Hub
     {
-        private readonly IMessageRepository _messageRepo;
         private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepository;
         private readonly IHubContext<PresenceHub> _presenceHub;
         private readonly PresenceTracker _tracker;
-        public MessageHub(IMessageRepository messageRepo, IMapper mapper, IUserRepository userRepository, IHubContext<PresenceHub> presenceHub,
+        private readonly IUnitOfWork _unitOfWork;
+        public MessageHub(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<PresenceHub> presenceHub,
          PresenceTracker tracker)
         {
+            _unitOfWork = unitOfWork;
             _tracker = tracker;
             _presenceHub = presenceHub;
-            _userRepository = userRepository;
             _mapper = mapper;
-            _messageRepo = messageRepo;
-
         }
 
         public override async Task OnConnectedAsync()
@@ -33,18 +30,21 @@ namespace API.SignalR
             var otherUser = httpContext.Request.Query["user"].ToString();
             var groupName = GetGroupName(Context.User.GetUserName(), otherUser);
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-            var group=await AddToGroup(groupName);
-            await Clients.Group(groupName).SendAsync("UpdatedGroup",group);
+            var group = await AddToGroup(groupName);
+            await Clients.Group(groupName).SendAsync("UpdatedGroup", group);
 
-            var messages = await _messageRepo.GetMessageThread(Context.User.GetUserName(), otherUser);
+            var messages = await _unitOfWork.MessageRepository.GetMessageThread(Context.User.GetUserName(), otherUser);
+
+            if(_unitOfWork.HasChanges())
+                await _unitOfWork.Complete();
 
             await Clients.Caller.SendAsync("ReceiveMessageThread", messages);
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            var group=await RemoveFromMessageGroup();
-            await Clients.Group(group.Name).SendAsync("UpdatedGroup",group);
+            var group = await RemoveFromMessageGroup();
+            await Clients.Group(group.Name).SendAsync("UpdatedGroup", group);
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -54,8 +54,8 @@ namespace API.SignalR
             var username = Context.User.GetUserName();
             if (username == createMessageDto.RecipientUserName.ToLower()) throw new HubException("Can't Send Yourself Message");
 
-            var sender = await _userRepository.GetUserByUsernameAsync(username);
-            var recipient = await _userRepository.GetUserByUsernameAsync(createMessageDto.RecipientUserName);
+            var sender = await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
+            var recipient = await _unitOfWork.UserRepository.GetUserByUsernameAsync(createMessageDto.RecipientUserName);
 
             if (recipient == null) throw new HubException("User Not Found");
 
@@ -70,7 +70,7 @@ namespace API.SignalR
 
             var groupName = GetGroupName(sender.UserName, recipient.UserName);
 
-            var group = await _messageRepo.GetMessageGroup(groupName);
+            var group = await _unitOfWork.MessageRepository.GetMessageGroup(groupName);
 
             if (group.Connections.Any(x => x.Username == recipient.UserName))
             {
@@ -79,15 +79,16 @@ namespace API.SignalR
             else
             {
                 var connections = await _tracker.GetConnectionForUser(recipient.UserName);
-                if(connections!=null){
+                if (connections != null)
+                {
                     await _presenceHub.Clients.Clients(connections).SendAsync("NewMessageReceived",
-                    new{username=sender.UserName,alias=sender.Alias});
+                    new { username = sender.UserName, alias = sender.Alias });
                 }
             }
 
-            _messageRepo.AddMessage(message);
+            _unitOfWork.MessageRepository.AddMessage(message);
 
-            if (await _messageRepo.SaveAllAsync())
+            if (await _unitOfWork.Complete())
             {
                 await Clients.Group(groupName).SendAsync("NewMessage", _mapper.Map<MessageDto>(message));
             }
@@ -95,30 +96,30 @@ namespace API.SignalR
 
         private async Task<Group> AddToGroup(string groupName)
         {
-            var group = await _messageRepo.GetMessageGroup(groupName);
+            var group = await _unitOfWork.MessageRepository.GetMessageGroup(groupName);
 
             var connection = new Connection(Context.ConnectionId, Context.User.GetUserName());
 
             if (group == null)
             {
                 group = new Group(groupName);
-                _messageRepo.AddGroup(group);
+                _unitOfWork.MessageRepository.AddGroup(group);
             }
             group.Connections.Add(connection);
 
-            if(await _messageRepo.SaveAllAsync()) return group;
+            if (await _unitOfWork.Complete()) return group;
 
             throw new HubException("Failed To Join Group");
         }
 
         private async Task<Group> RemoveFromMessageGroup()
         {
-            var group = await _messageRepo.GetGroupForConnection(Context.ConnectionId);
-            var connection=group.Connections.FirstOrDefault(x=>x.ConnectionId==Context.ConnectionId);
-            _messageRepo.RemoveConnection(connection);
-            if(await _messageRepo.SaveAllAsync()) return group;
+            var group = await _unitOfWork.MessageRepository.GetGroupForConnection(Context.ConnectionId);
+            var connection = group.Connections.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
+            _unitOfWork.MessageRepository.RemoveConnection(connection);
+            if (await _unitOfWork.Complete()) return group;
 
-             throw new HubException("Failed To Remove From Group");
+            throw new HubException("Failed To Remove From Group");
         }
         private string GetGroupName(string fromUser, string toOther)
         {
