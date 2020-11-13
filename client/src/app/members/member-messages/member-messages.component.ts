@@ -2,6 +2,7 @@ import { NgForm } from '@angular/forms';
 import { MessageService } from './../../_services/message.service';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Message } from 'src/app/_models/message';
+import { ChangeDetectionStrategy } from '@angular/compiler/src/compiler_facade_interface';
 
 @Component({
   selector: 'app-member-messages',
