@@ -7,6 +7,7 @@ using API.Entities;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 
 namespace API.Data
 {
@@ -32,6 +33,7 @@ namespace API.Data
             }
 
             foreach(var user in users){
+               user.Photos.First().IsApproved = true;
                user.UserName=user.UserName.ToLower();
                await  userManager.CreateAsync(user,"P@ssw0rd");
                await userManager.AddToRoleAsync(user,"Member");
